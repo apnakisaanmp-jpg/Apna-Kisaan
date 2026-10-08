@@ -1,0 +1,15 @@
+.git
+.env
+.env.*
+!.env.example
+.dockerignore
+Dockerfile
+node_modules
+vendor
+storage
+public/hot
+public/storage
+public/Apna-Kisaan
+bootstrap/cache/*.php
+.phpunit.result.cache
+tests
