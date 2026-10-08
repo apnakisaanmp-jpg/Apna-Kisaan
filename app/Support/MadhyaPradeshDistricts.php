@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Support;
+
+class MadhyaPradeshDistricts
+{
+    public static function all(): array
+    {
+        return [
+            ['आगर मालवा', 'Agar Malwa', 'agar-malwa', 'मालवा'],
+            ['अलीराजपुर', 'Alirajpur', 'alirajpur', 'निमाड़'],
+            ['अनूपपुर', 'Anuppur', 'anuppur', 'विंध्य'],
+            ['अशोकनगर', 'Ashoknagar', 'ashoknagar', 'बुंदेलखंड'],
+            ['बालाघाट', 'Balaghat', 'balaghat', 'महाकौशल'],
+            ['बड़वानी', 'Barwani', 'barwani', 'निमाड़'],
+            ['बैतूल', 'Betul', 'betul', 'सतपुड़ा'],
+            ['भिंड', 'Bhind', 'bhind', 'चंबल'],
+            ['भोपाल', 'Bhopal', 'bhopal', 'राजधानी क्षेत्र'],
+            ['बुरहानपुर', 'Burhanpur', 'burhanpur', 'निमाड़'],
+            ['छतरपुर', 'Chhatarpur', 'chhatarpur', 'बुंदेलखंड'],
+            ['छिंदवाड़ा', 'Chhindwara', 'chhindwara', 'सतपुड़ा'],
+            ['दमोह', 'Damoh', 'damoh', 'बुंदेलखंड'],
+            ['दतिया', 'Datia', 'datia', 'बुंदेलखंड'],
+            ['देवास', 'Dewas', 'dewas', 'मालवा'],
+            ['धार', 'Dhar', 'dhar', 'मालवा'],
+            ['डिंडौरी', 'Dindori', 'dindori', 'महाकौशल'],
+            ['गुना', 'Guna', 'guna', 'मालवा'],
+            ['ग्वालियर', 'Gwalior', 'gwalior', 'चंबल'],
+            ['हरदा', 'Harda', 'harda', 'नर्मदा क्षेत्र'],
+            ['इंदौर', 'Indore', 'indore', 'मालवा'],
+            ['जबलपुर', 'Jabalpur', 'jabalpur', 'महाकौशल'],
+            ['झाबुआ', 'Jhabua', 'jhabua', 'मालवा'],
+            ['कटनी', 'Katni', 'katni', 'महाकौशल'],
+            ['खंडवा', 'Khandwa', 'khandwa', 'निमाड़'],
+            ['खरगोन', 'Khargone', 'khargone', 'निमाड़'],
+            ['मैहर', 'Maihar', 'maihar', 'विंध्य'],
+            ['मंडला', 'Mandla', 'mandla', 'महाकौशल'],
+            ['मंदसौर', 'Mandsaur', 'mandsaur', 'मालवा'],
+            ['मऊगंज', 'Mauganj', 'mauganj', 'विंध्य'],
+            ['मुरैना', 'Morena', 'morena', 'चंबल'],
+            ['नर्मदापुरम', 'Narmadapuram', 'narmadapuram', 'नर्मदा क्षेत्र'],
+            ['नरसिंहपुर', 'Narsinghpur', 'narsinghpur', 'महाकौशल'],
+            ['नीमच', 'Neemuch', 'neemuch', 'मालवा'],
+            ['निवाड़ी', 'Niwari', 'niwari', 'बुंदेलखंड'],
+            ['पांढुर्णा', 'Pandhurna', 'pandhurna', 'सतपुड़ा'],
+            ['पन्ना', 'Panna', 'panna', 'बुंदेलखंड'],
+            ['रायसेन', 'Raisen', 'raisen', 'नर्मदा क्षेत्र'],
+            ['राजगढ़', 'Rajgarh', 'rajgarh', 'मालवा'],
+            ['रतलाम', 'Ratlam', 'ratlam', 'मालवा'],
+            ['रीवा', 'Rewa', 'rewa', 'विंध्य'],
+            ['सागर', 'Sagar', 'sagar', 'बुंदेलखंड'],
+            ['सतना', 'Satna', 'satna', 'विंध्य'],
+            ['सीहोर', 'Sehore', 'sehore', 'मालवा'],
+            ['सिवनी', 'Seoni', 'seoni', 'महाकौशल'],
+            ['शहडोल', 'Shahdol', 'shahdol', 'विंध्य'],
+            ['शाजापुर', 'Shajapur', 'shajapur', 'मालवा'],
+            ['श्योपुर', 'Sheopur', 'sheopur', 'चंबल'],
+            ['शिवपुरी', 'Shivpuri', 'shivpuri', 'चंबल'],
+            ['सीधी', 'Sidhi', 'sidhi', 'विंध्य'],
+            ['सिंगरौली', 'Singrauli', 'singrauli', 'विंध्य'],
+            ['टीकमगढ़', 'Tikamgarh', 'tikamgarh', 'बुंदेलखंड'],
+            ['उज्जैन', 'Ujjain', 'ujjain', 'मालवा'],
+            ['उमरिया', 'Umaria', 'umaria', 'विंध्य'],
+            ['विदिशा', 'Vidisha', 'vidisha', 'मालवा'],
+        ];
+    }
+}

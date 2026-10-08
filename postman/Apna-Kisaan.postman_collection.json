@@ -1,0 +1,712 @@
+{
+  "info": {
+    "_postman_id": "5ba54f09-3f02-4e60-9e33-5bbcc964e8ad",
+    "name": "Apna Kisaan API",
+    "description": "Apna Kisaan Laravel API: account auth, public content, live/fallback market prices, lead forms, and authenticated inquiries. Import this collection, set base_url, then register or log in to store a Bearer token automatically.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 - Account",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Created account', function () { pm.response.to.have.status(201); });",
+                  "const body = pm.response.json();",
+                  "pm.test('Returns user and Bearer token', function () { pm.expect(body.success).to.eql(true); pm.expect(body.data.user.email).to.be.a('string'); pm.expect(body.data.token).to.be.a('string'); pm.expect(body.data.user).to.not.have.property('password'); });",
+                  "if (body.data && body.data.token) pm.collectionVariables.set('token', body.data.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Demo Farmer\",\n  \"email\": \"farmer@example.com\",\n  \"mobile\": \"9876543210\",\n  \"password\": \"secure-pass-123\",\n  \"password_confirmation\": \"secure-pass-123\",\n  \"device_name\": \"postman\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "register"
+              ]
+            },
+            "description": "Creates an active user and returns a hashed-at-rest personal API token. Use a unique email each time."
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Login succeeded', function () { pm.response.to.have.status(200); });",
+                  "const body = pm.response.json();",
+                  "if (body.data && body.data.token) pm.collectionVariables.set('token', body.data.token);",
+                  "pm.test('Token is stored for protected requests', function () { pm.expect(pm.collectionVariables.get('token')).to.be.a('string').and.not.empty; });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"farmer@example.com\",\n  \"password\": \"secure-pass-123\",\n  \"device_name\": \"postman\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "My profile",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Logout current token",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "logout"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Public content",
+      "item": [
+        {
+          "name": "Services",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/services",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "services"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Service by slug",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/services/mandi-bhav",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "services",
+                "mandi-bhav"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Districts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/districts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "districts"
+              ]
+            }
+          }
+        },
+        {
+          "name": "District by slug",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/districts/damoh",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "districts",
+                "damoh"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crop categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/crop-categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "crop-categories"
+              ]
+            }
+          }
+        },
+        {
+          "name": "FAQs by page",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/faqs?page=home",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "faqs"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "home"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Homepage sliders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/sliders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "sliders"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Market prices",
+      "item": [
+        {
+          "name": "All mandi prices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/mandi-bhav?q=wheat&is_mp=1&min_price=1000&sort=modal_price&order=desc&page=1&per_page=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "mandi-bhav"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "wheat",
+                  "description": "Search Hindi/English crop, market, district, or category."
+                },
+                {
+                  "key": "is_mp",
+                  "value": "1",
+                  "description": "1 = records marked MP-relevant; 0 = other records."
+                },
+                {
+                  "key": "min_price",
+                  "value": "1000"
+                },
+                {
+                  "key": "sort",
+                  "value": "modal_price"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Filters actual records from the configured farmer.in open-data feed and returns feed attribution/fallback metadata."
+          }
+        },
+        {
+          "name": "Market prices (legacy alias)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/market-price?q=गेहूं",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "market-price"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "गेहूं"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Vegetable prices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/vegetable-price?category=सब्जियां",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "vegetable-price"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "सब्जियां"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crop prices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/crop-price?trend=up&max_price=10000",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "crop-price"
+              ],
+              "query": [
+                {
+                  "key": "trend",
+                  "value": "up"
+                },
+                {
+                  "key": "max_price",
+                  "value": "10000"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Forms",
+      "item": [
+        {
+          "name": "Submit public contact inquiry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Demo Farmer\",\n  \"phone\": \"9876543210\",\n  \"district\": \"दमोह\",\n  \"subject\": \"मंडी भाव जानकारी\",\n  \"vegetable\": \"टमाटर\",\n  \"message\": \"कृपया बाजार की जानकारी साझा करें।\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/inquiries",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "inquiries"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Register farmer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"farmer\",\n  \"name\": \"Demo Farmer\",\n  \"mobile\": \"9876543210\",\n  \"district\": \"दमोह\",\n  \"village\": \"उदाहरण गांव\",\n  \"main_crop\": \"गेहूं\",\n  \"farm_area\": 3.5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/farmer-registrations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "farmer-registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Register buyer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"buyer\",\n  \"name\": \"Demo Buyer\",\n  \"mobile\": \"9876543210\",\n  \"business_type\": \"थोक व्यापारी\",\n  \"city\": \"भोपाल\",\n  \"required_crop\": \"टमाटर\",\n  \"required_quantity\": 25\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/farmer-registrations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "farmer-registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Request transport booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pickup_location\": \"दमोह\",\n  \"delivery_location\": \"भोपाल\",\n  \"vehicle_type\": \"truck\",\n  \"crop_name\": \"गेहूं\",\n  \"quantity\": 10,\n  \"preferred_date\": \"{{transport_date}}\",\n  \"mobile\": \"9876543210\",\n  \"notes\": \"लोडिंग का समय सुबह।\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/transport-bookings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "transport-bookings"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const date = new Date();",
+                  "date.setDate(date.getDate() + 1);",
+                  "pm.variables.set('transport_date', date.toISOString().slice(0, 10));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 - Signed-in user",
+      "item": [
+        {
+          "name": "Create my inquiry",
+          "request": {
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Transport request update\",\n  \"message\": \"Please contact me about my transport request.\",\n  \"phone\": \"9876543210\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/my/inquiries",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "my",
+                "inquiries"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List my inquiries",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/my/inquiries",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "my",
+                "inquiries"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

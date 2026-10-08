@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class ActivityLog extends Model
+{
+    protected $fillable = [
+        'user_id', 'action', 'model', 'model_id',
+        'description', 'old_values', 'new_values', 'ip_address',
+    ];
+
+    protected $casts = [
+        'old_values' => 'array',
+        'new_values' => 'array',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public static function record(
+        string $action,
+        string $model,
+        ?int $modelId = null,
+        ?string $description = null,
+        array $oldValues = [],
+        array $newValues = []
+    ): void {
+        static::create([
+            'user_id'     => auth()->id(),
+            'action'      => $action,
+            'model'       => $model,
+            'model_id'    => $modelId,
+            'description' => $description,
+            'old_values'  => $oldValues ?: null,
+            'new_values'  => $newValues ?: null,
+            'ip_address'  => request()->ip(),
+        ]);
+    }
+}
